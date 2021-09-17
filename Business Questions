@@ -1,0 +1,28 @@
+What questions do you have about the data?
+
+a)Is the data aggragated from multiple sources? 
+b)Do we have flexibility to validate JSON File at source itself?
+c)Do we flexibility make changes to to data model without hindering day to day operations?
+
+
+How did you discover the data quality issues?
+
+Upon inspection during modelling there seems to be denormalised table receipt in  database leading to inefficient querying 
+which can cause complications and inaccurate results.
+
+What do you need to know to resolve the data quality issues?
+
+A separate rewardsReceiptItemList table can be created from exisiting receipts table to resolve performance issues and ensure accurate results.
+
+What other information would you need to help you optimize the data assets you're trying to create?
+
+ A clear connection between recipt and recipt Item list would help in effecient Data modelling.
+ Missing Items in receiptItem List would reduce errors.
+ Possibility of validating data at source would reduce performance issues.
+
+
+What performance and scaling concerns do you anticipate in production and how do you plan to address them?
+
+The dataset in the current format will lead to scaling issues, as the receipts.json file has reduant rewardsItemListList 
+that will lead to scaling issues and hence propose to make a separte table for rewardsItemList will lead to faster searching 
+better scalability and performance.
