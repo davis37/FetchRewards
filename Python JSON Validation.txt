@@ -1,0 +1,11 @@
+import json
+from google.colab import files
+uploaded = files.upload()
+
+import re
+import json
+with open("receipts.json") as infile:
+    jstring = infile.read()
+data = json.loads(re.sub(r"(\w+):", r'"\1":', jstring))
+
+JSONDecodeError: Extra data: line 2 column 1 (char 871)
