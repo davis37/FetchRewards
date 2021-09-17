@@ -1,0 +1,24 @@
+What questions do you have about the data?
+
+
+
+How did you discover the data quality issues?
+
+Upon inspection during modelling there seems to be denormalised database leading to inefficient querying 
+which can cause complicated and inaccurate results.
+
+What do you need to know to resolve the data quality issues?
+
+A separate  table can be created from exisiting receipts table to resolve performance issues and ensure accurate results.
+
+What other information would you need to help you optimize the data assets you're trying to create?
+
+ A clear connection between recipt and recipt Item list would help in effecient Data modelling
+ Missing Items in receiptItem List would reduce errors.
+
+
+What performance and scaling concerns do you anticipate in production and how do you plan to address them?
+
+The dataset in the current format will lead to scaling issues, as the receipts.json file has reduant rewardsItemListList 
+that will lead to scaling issues and hence propose to make a separte table for rewardsItemList will lead to faster searching 
+better scalability and performance.
