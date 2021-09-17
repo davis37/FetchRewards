@@ -1,0 +1,67 @@
+
+What are the top 5 brands by receipts scanned for most recent month?
+
+SELECT TOP 5 (B.name) from
+(Select Count(B.Name) 
+FROM Receipt AS R INNER JOIN rewardsReceiptItemList AS ITEM ON ITEM.receiptID=R.receiptID
+INNER JOIN Brands AS B ON ITEM.brandCode=B.brandCode
+WHERE topBrand='T' AND MONTH(R.dateScanned)=(SELECT MONTH(R.dateScanned)
+                                              FROM Receipt
+                                              ORDER BY R.dateScanned DESC LIMIT 1)
+GROUP BY B.Name)
+ORDER By DESC
+
+
+
+How does the ranking of the top 5 brands by receipts scanned for the recent month compare to the ranking for the previous month?
+
+SELECT TOP 5 COUNT(B.name) FROM
+(Select Count(B.Name) 
+FROM Receipt AS R INNER JOIN rewardsReceiptItemList AS ITEM ON ITEM.receiptID=R.receiptID
+INNER JOIN Brands AS B ON ITEM.brandCode=B.brandCode
+WHERE topBrand='T' AND MONTH(R.dateScanned)IN(SELECT MONTH(R.dateScanned)              
+                                              FROM Receipt
+                                              ORDER BY R.dateScanned DESC LIMIT 2)
+GROUP BY MONTH(R.dateScanned),B.name)
+ORDER By DESC
+
+
+When considering average spend from
+receipts with 'rewardsReceiptStatus’ of ‘Accepted’ or ‘Rejected’, which is greater?
+
+SELECT AVG(totalSpent)
+FROM Receipts
+GROUP BY rewardsReceiptStatus
+HAVING rewardsReceiptStatus="Accepted" OR rewardsReceiptStatus="Rejected"
+
+
+
+When considering total number of items purchased from
+receipts with 'rewardsReceiptStatus’ of ‘Accepted’ or ‘Rejected’, which is greater?
+
+SELECT COUNT(purchasedItemCount)
+FROM Receipts
+GROUP BY rewardsReceiptStatus
+HAVING rewardsReceiptStatus="Accepted" OR rewardsReceiptStatus="Rejected"
+
+Which brand has the most spend among users who were created within the past 6 months?
+
+SELECT B.Name
+FROM Brands AS B INNER JOIN rewardsReceiptItemList AS ITEM ON ITEM.brandCode=B.brandCode 
+INNER JOIN Receipt AS R ON ITEM.receiptID=R.receiptID
+INNER JOIN User AS U ON R.userId=U._id
+WHERE MONTH(U.createdDate)IN(SELECT MONTH(U.createdDate)              
+                             FROM User
+                             ORDER BY U.createdDate DESC LIMIT 6)
+GROUP BY B.Name
+ORDER BY SUM(R.totalSpent) DESC LIMIT 1
+
+
+Which brand has the most transactions among users who were created within the past 6 months?
+
+SELECT B.Name
+FROM Brands AS B INNER JOIN rewardsReceiptItemList AS ITEM ON ITEM.brandCode=B.brandCode 
+INNER JOIN Receipt AS R ON ITEM.receiptID=R.receiptID
+INNER JOIN User AS U ON R.userId=U._id
+GROUP BY B.Name
+ORDER BY COUNT(B.Name) DESC
